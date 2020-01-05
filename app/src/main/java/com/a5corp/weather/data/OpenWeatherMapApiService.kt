@@ -1,7 +1,7 @@
 package com.a5corp.weather.data
 
 import com.a5corp.weather.BuildConfig
-import com.a5corp.weather.data.response.current.CurrentWeatherResponse
+import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
