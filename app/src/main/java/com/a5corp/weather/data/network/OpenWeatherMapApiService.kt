@@ -1,4 +1,4 @@
-package com.a5corp.weather.data
+package com.a5corp.weather.data.network
 
 import com.a5corp.weather.BuildConfig
 import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
@@ -16,7 +16,9 @@ interface OpenWeatherMapApiService {
     @GET("weather") fun getCurrentWeather(@Query("lat") latitude: Double, @Query("lon") longitude: Double): Deferred<CurrentWeatherResponse>
 
     companion object {
-        operator fun invoke(): OpenWeatherMapApiService {
+        operator fun invoke(
+            connectivityInterceptor: ConnectivityInterceptor
+        ): OpenWeatherMapApiService {
             val requestInterceptor = Interceptor {chain ->
                 val url = chain.request()
                     .url()
@@ -34,6 +36,7 @@ interface OpenWeatherMapApiService {
 
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder()
