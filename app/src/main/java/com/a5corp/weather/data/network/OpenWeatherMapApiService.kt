@@ -24,6 +24,7 @@ interface OpenWeatherMapApiService {
                     .url()
                     .newBuilder()
                     .addQueryParameter("appid", BuildConfig.OWM_API_KEY)
+                    .addQueryParameter("units", "metric")
                     .build()
 
                 val request = chain.request()
