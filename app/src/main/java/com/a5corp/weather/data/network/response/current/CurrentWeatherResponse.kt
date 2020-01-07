@@ -7,7 +7,7 @@ import com.google.gson.reflect.TypeToken
 
 @Entity(tableName = "weather_response")
 data class CurrentWeatherResponse(
-    @PrimaryKey(autoGenerate = false) var id: Int = 0,
+    @PrimaryKey(autoGenerate = false) var id_count: Int = 0,
     @Embedded(prefix = "coord_") val coord: Coord,
     //@Embedded(prefix = "details_") @SerializedName("weather") val details: List<Details>,
     val base: String,
