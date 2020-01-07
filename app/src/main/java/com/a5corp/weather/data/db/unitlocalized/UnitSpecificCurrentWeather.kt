@@ -5,5 +5,8 @@ interface UnitSpecificCurrentWeather {
     val pressure: Int
     val humidity: Int
     val windSpeed: Double
+    val windDirection: Int
+    val visibility: Int
+    val cityName: String
     val feelsLikeTemperature: Double
 }
