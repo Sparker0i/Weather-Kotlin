@@ -9,11 +9,7 @@ import com.a5corp.weather.internal.NoConnectivityException
 class WeatherNetworkDataSourceImpl(
     private val openWeatherMapApiService: OpenWeatherMapApiService
 ) : WeatherNetworkDataSource {
-
-    private val _getCurrentWeather = MutableLiveData<CurrentWeatherResponse>()
-
-    override val getCurrentWeather: LiveData<CurrentWeatherResponse>
-        get() = _getCurrentWeather
+    override val getCurrentWeather = MutableLiveData<CurrentWeatherResponse>()
 
     override suspend fun fetchCurrentWeather(location: String) {
         try {
@@ -21,7 +17,7 @@ class WeatherNetworkDataSourceImpl(
                 .getCurrentWeather(location)
                 .await()
 
-            _getCurrentWeather.postValue(fetchCurrentWeather)
+            getCurrentWeather.postValue(fetchCurrentWeather)
         }
         catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No Internet Connection", e)
