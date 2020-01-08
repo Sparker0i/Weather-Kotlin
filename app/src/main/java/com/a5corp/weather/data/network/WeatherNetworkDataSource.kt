@@ -1,11 +1,11 @@
 package com.a5corp.weather.data.network
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
 
 interface WeatherNetworkDataSource {
-    val getCurrentWeather: LiveData<CurrentWeatherResponse>
+    val getCurrentWeather: MutableLiveData<CurrentWeatherResponse>
 
-    suspend fun fetchCurrentWeather(location: String)
-    suspend fun fetchCurrentWeather(latitude: Double, longitude: Double)
+    suspend fun fetchCurrentWeather(location: String, units: String)
+    suspend fun fetchCurrentWeather(latitude: Double, longitude: Double, units: String)
 }

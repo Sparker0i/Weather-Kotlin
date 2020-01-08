@@ -13,6 +13,6 @@ import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
 interface CurrentWeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE) fun upsert(weatherEntry: CurrentWeatherResponse)
 
-    @Query("SELECT * FROM WEATHER_RESPONSE WHERE ID = 0") fun getWeatherMetric(): LiveData<MetricCurrentWeather>
-    @Query("SELECT * FROM WEATHER_RESPONSE WHERE ID = 0") fun getWeatherImperial(): LiveData<ImperialCurrentWeather>
+    @Query("SELECT * FROM WEATHER_RESPONSE WHERE ID_COUNT = 0") fun getWeatherMetric(): LiveData<MetricCurrentWeather>
+    @Query("SELECT * FROM WEATHER_RESPONSE WHERE ID_COUNT = 0") fun getWeatherImperial(): LiveData<ImperialCurrentWeather>
 }
