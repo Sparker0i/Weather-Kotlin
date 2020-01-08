@@ -1,25 +1,16 @@
 package com.a5corp.weather.ui.weather.current
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-
+import androidx.lifecycle.ViewModelProviders
 import com.a5corp.weather.R
-import com.a5corp.weather.data.network.ConnectivityInterceptorImpl
-import com.a5corp.weather.data.network.OpenWeatherMapApiService
-import com.a5corp.weather.data.network.WeatherNetworkDataSource
-import com.a5corp.weather.data.network.WeatherNetworkDataSourceImpl
 import com.a5corp.weather.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.current_weather_fragment.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
@@ -92,7 +83,6 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     private fun updateWind(windDirection: String, windSpeed: Double) {
         val unitAbbreviation = chooseLocalizedUnitAbbreviation("kph", "mph")
         textView_wind.text = "Wind: $windDirection°, $windSpeed $unitAbbreviation"
-        println("Wind: $windDirection°, $windSpeed $unitAbbreviation")
     }
 
     private fun updateVisibility(visibilityDistance: Double) {

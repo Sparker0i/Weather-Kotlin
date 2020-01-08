@@ -12,8 +12,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface OpenWeatherMapApiService {
-    @GET("weather") fun getCurrentWeather(@Query("q") location: String): Deferred<CurrentWeatherResponse>
-    @GET("weather") fun getCurrentWeather(@Query("lat") latitude: Double, @Query("lon") longitude: Double): Deferred<CurrentWeatherResponse>
+    @GET("weather") fun getCurrentWeather(@Query("q") location: String, @Query("units") units: String): Deferred<CurrentWeatherResponse>
+    @GET("weather") fun getCurrentWeather(@Query("lat") latitude: Double, @Query("lon") longitude: Double, @Query("units") units: String): Deferred<CurrentWeatherResponse>
 
     companion object {
         operator fun invoke(
@@ -24,7 +24,6 @@ interface OpenWeatherMapApiService {
                     .url()
                     .newBuilder()
                     .addQueryParameter("appid", BuildConfig.OWM_API_KEY)
-                    .addQueryParameter("units", "metric")
                     .build()
 
                 val request = chain.request()

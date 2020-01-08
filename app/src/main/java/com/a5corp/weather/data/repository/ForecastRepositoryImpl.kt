@@ -5,11 +5,13 @@ import com.a5corp.weather.data.db.CurrentWeatherDao
 import com.a5corp.weather.data.db.unitlocalized.UnitSpecificCurrentWeather
 import com.a5corp.weather.data.network.WeatherNetworkDataSource
 import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
+import com.a5corp.weather.internal.UnitSystem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
+import java.util.*
 
 class ForecastRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
@@ -24,7 +26,7 @@ class ForecastRepositoryImpl(
 
     override suspend fun getCurrentWeather(metric: Boolean): LiveData<out UnitSpecificCurrentWeather> {
         return withContext(Dispatchers.IO) {
-            initWeatherData()
+            initWeatherData(metric)
             return@withContext if (metric) currentWeatherDao.getWeatherMetric()
             else currentWeatherDao.getWeatherImperial()
         }
@@ -36,13 +38,14 @@ class ForecastRepositoryImpl(
         }
     }
 
-    private suspend fun initWeatherData() {
+    private suspend fun initWeatherData(metric: Boolean) {
         if (isFetchCurrentNeeded(ZonedDateTime.now().minusHours(1)))
-            fetchCurrentWeather()
+            fetchCurrentWeather(metric)
     }
 
-    private suspend fun fetchCurrentWeather() {
-        weatherNetworkDataSource.fetchCurrentWeather("Bangalore")
+    private suspend fun fetchCurrentWeather(metric: Boolean) {
+        val units = if (metric) UnitSystem.METRIC.name.toLowerCase(Locale.getDefault()) else UnitSystem.IMPERIAL.name.toLowerCase(Locale.getDefault())
+        weatherNetworkDataSource.fetchCurrentWeather("Bangalore", units)
     }
 
     private fun isFetchCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {
