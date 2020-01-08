@@ -7,6 +7,7 @@ import com.a5corp.weather.data.network.WeatherNetworkDataSource
 import com.a5corp.weather.data.network.response.current.Coord
 import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
 import com.a5corp.weather.data.provider.LocationProvider
+import com.a5corp.weather.data.provider.PreferenceProvider
 import com.a5corp.weather.internal.UnitSystem
 import com.a5corp.weather.utils.zonedDateTime
 import kotlinx.coroutines.Dispatchers
@@ -16,10 +17,12 @@ import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
 import java.util.*
 
+const val USE_DEVICE_LOCATION = "USE_DEVICE_LOCATION"
 class ForecastRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
     private val weatherNetworkDataSource: WeatherNetworkDataSource,
-    private val locationProvider: LocationProvider
+    private val locationProvider: LocationProvider,
+    private val preferenceProvider: PreferenceProvider
 ) : ForecastRepository {
 
     init {
@@ -49,21 +52,25 @@ class ForecastRepositoryImpl(
     }
 
     private suspend fun initWeatherData(metric: Boolean) {
-        val lastWeatherLocation = if (metric) currentWeatherDao.getWeatherMetric().value else currentWeatherDao.getWeatherImperial().value
+        val lastWeatherLocation = currentWeatherDao.getWeather()
+        println(lastWeatherLocation.value)
 
-        if (lastWeatherLocation == null
-            || locationProvider.hasLocationChanged(lastWeatherLocation)) {
+        if (lastWeatherLocation.value == null
+            || locationProvider.hasLocationChanged(lastWeatherLocation.value!!)) {
             fetchCurrentWeather(metric)
             return
         }
 
-        if (isFetchCurrentNeeded(zonedDateTime(lastWeatherLocation.dt)))
+        if (isFetchCurrentNeeded(zonedDateTime(lastWeatherLocation.value!!.dt)))
             fetchCurrentWeather(metric)
     }
 
     private suspend fun fetchCurrentWeather(metric: Boolean) {
         val units = if (metric) UnitSystem.METRIC.name.toLowerCase(Locale.getDefault()) else UnitSystem.IMPERIAL.name.toLowerCase(Locale.getDefault())
-        weatherNetworkDataSource.fetchCurrentWeather(locationProvider.getPreferredLocationString(), units)
+        if (preferenceProvider.preferences.getBoolean(USE_DEVICE_LOCATION, false))
+            weatherNetworkDataSource.fetchCurrentWeather(locationProvider.getDeviceLocation().latitude, locationProvider.getDeviceLocation().longitude, units)
+        else
+            weatherNetworkDataSource.fetchCurrentWeather(locationProvider.getCityName(), units)
     }
 
     private fun isFetchCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {

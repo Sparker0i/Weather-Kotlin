@@ -1,8 +1,10 @@
 package com.a5corp.weather.data.provider
 
-import com.a5corp.weather.data.db.unitlocalized.UnitSpecificCurrentWeather
+import android.location.Location
+import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
 
 interface LocationProvider {
-    suspend fun hasLocationChanged(lastWeatherLocation: UnitSpecificCurrentWeather): Boolean
-    suspend fun getPreferredLocationString(): String
+    suspend fun hasLocationChanged(lastWeatherLocation: CurrentWeatherResponse): Boolean
+    suspend fun getCityName(): String
+    suspend fun getDeviceLocation(): Location
 }
