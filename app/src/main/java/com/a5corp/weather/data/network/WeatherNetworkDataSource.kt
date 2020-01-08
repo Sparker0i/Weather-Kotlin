@@ -6,6 +6,6 @@ import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
 interface WeatherNetworkDataSource {
     val getCurrentWeather: MutableLiveData<CurrentWeatherResponse>
 
-    suspend fun fetchCurrentWeather(location: String)
-    suspend fun fetchCurrentWeather(latitude: Double, longitude: Double)
+    suspend fun fetchCurrentWeather(location: String, units: String)
+    suspend fun fetchCurrentWeather(latitude: Double, longitude: Double, units: String)
 }

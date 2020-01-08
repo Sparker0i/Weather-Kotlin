@@ -11,10 +11,10 @@ class WeatherNetworkDataSourceImpl(
 ) : WeatherNetworkDataSource {
     override val getCurrentWeather = MutableLiveData<CurrentWeatherResponse>()
 
-    override suspend fun fetchCurrentWeather(location: String) {
+    override suspend fun fetchCurrentWeather(location: String, units: String) {
         try {
             val fetchCurrentWeather = openWeatherMapApiService
-                .getCurrentWeather(location)
+                .getCurrentWeather(location, units)
                 .await()
 
             getCurrentWeather.postValue(fetchCurrentWeather)
@@ -24,7 +24,7 @@ class WeatherNetworkDataSourceImpl(
         }
     }
 
-    override suspend fun fetchCurrentWeather(latitude: Double, longitude: Double) {
+    override suspend fun fetchCurrentWeather(latitude: Double, longitude: Double, units: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
