@@ -10,5 +10,5 @@ data class Sys(
     val sunrise: Int,
     val sunset: Int
 ) {
-    @PrimaryKey(autoGenerate = false) var id = 0
+    @PrimaryKey(autoGenerate = false) var id_count = 0
 }

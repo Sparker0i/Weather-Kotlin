@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "coordinates")
 data class Coord(
-    val lon: Double,
-    val lat: Double
+    val lat: Double,
+    val lon: Double
 ) {
-    @PrimaryKey(autoGenerate = false) var id = 0
+    @PrimaryKey(autoGenerate = false) var id_count = 0
 }

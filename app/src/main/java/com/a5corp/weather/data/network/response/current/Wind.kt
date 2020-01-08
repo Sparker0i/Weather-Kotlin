@@ -8,5 +8,5 @@ data class Wind(
     val speed: Double,
     val deg: Int
 ) {
-    @PrimaryKey(autoGenerate = false) var id = 0
+    @PrimaryKey(autoGenerate = false) var id_count = 0
 }

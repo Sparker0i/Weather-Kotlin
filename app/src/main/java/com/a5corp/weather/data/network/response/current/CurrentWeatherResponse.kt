@@ -4,6 +4,9 @@ import androidx.room.*
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
 
 @Entity(tableName = "weather_response")
 data class CurrentWeatherResponse(
@@ -14,7 +17,7 @@ data class CurrentWeatherResponse(
     @Embedded(prefix = "main_") val main: Main,
     val visibility: Int,
     @Embedded(prefix = "wind_") val wind: Wind,
-    val dt: Int,
+    val dt: Long,
     @Embedded(prefix = "sys_") val sys: Sys,
     val timezone: Int,
     val name: String,
