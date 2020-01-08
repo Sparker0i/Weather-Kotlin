@@ -9,4 +9,5 @@ interface UnitSpecificCurrentWeather {
     val visibility: Int
     val cityName: String
     val feelsLikeTemperature: Double
+    val dt: Long
 }

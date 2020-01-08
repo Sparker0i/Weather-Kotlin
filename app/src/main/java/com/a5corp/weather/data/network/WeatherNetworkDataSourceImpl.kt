@@ -25,6 +25,15 @@ class WeatherNetworkDataSourceImpl(
     }
 
     override suspend fun fetchCurrentWeather(latitude: Double, longitude: Double, units: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        try {
+            val fetchCurrentWeather = openWeatherMapApiService
+                .getCurrentWeather(latitude, longitude, units)
+                .await()
+
+            getCurrentWeather.postValue(fetchCurrentWeather)
+        }
+        catch (e: NoConnectivityException) {
+            Log.e("Connectivity", "No Internet Connection", e)
+        }
     }
 }

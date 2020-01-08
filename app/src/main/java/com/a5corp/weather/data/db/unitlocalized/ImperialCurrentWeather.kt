@@ -10,5 +10,6 @@ data class ImperialCurrentWeather(
     @ColumnInfo(name = "wind_deg") override val windDirection: Int,
     @ColumnInfo(name = "visibility") override val visibility: Int,
     @ColumnInfo(name = "name") override val cityName: String,
+    @ColumnInfo(name = "dt") override val dt: Long,
     @ColumnInfo(name = "main_feelsLike") override val feelsLikeTemperature: Double
 ): UnitSpecificCurrentWeather

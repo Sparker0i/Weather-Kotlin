@@ -1,13 +1,14 @@
 package com.a5corp.weather
 
 import android.app.Application
+import android.content.Context
 import com.a5corp.weather.data.db.ForecastDatabase
 import com.a5corp.weather.data.network.*
-import com.a5corp.weather.data.provider.UnitProvider
-import com.a5corp.weather.data.provider.UnitProviderImpl
+import com.a5corp.weather.data.provider.*
 import com.a5corp.weather.data.repository.ForecastRepository
 import com.a5corp.weather.data.repository.ForecastRepositoryImpl
 import com.a5corp.weather.ui.weather.current.CurrentWeatherViewModelFactory
+import com.google.android.gms.location.LocationServices
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -16,6 +17,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import kotlin.math.sin
 
 class ForecastApplication: Application(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
@@ -25,8 +27,11 @@ class ForecastApplication: Application(), KodeinAware {
         bind() from singleton { instance<ForecastDatabase>().currentWeatherDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { OpenWeatherMapApiService(instance()) }
+        bind() from singleton { PreferenceProvider(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance()) }
+        bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance(), instance(), instance()) }
+        bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
     }
