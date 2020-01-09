@@ -2,6 +2,7 @@ package com.a5corp.weather
 
 import android.app.Application
 import android.content.Context
+import androidx.preference.PreferenceManager
 import com.a5corp.weather.data.db.ForecastDatabase
 import com.a5corp.weather.data.network.*
 import com.a5corp.weather.data.provider.*
@@ -17,13 +18,16 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import kotlin.math.sin
 
 class ForecastApplication: Application(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
         import(androidXModule(this@ForecastApplication))
 
-        bind() from singleton { ForecastDatabase(instance()) }
+        bind() from singleton {
+            ForecastDatabase(
+                instance()
+            )
+        }
         bind() from singleton { instance<ForecastDatabase>().currentWeatherDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { OpenWeatherMapApiService(instance()) }
@@ -39,5 +43,6 @@ class ForecastApplication: Application(), KodeinAware {
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
     }
 }

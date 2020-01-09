@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.a5corp.weather.data.network.response.current.*
 
 @Database(
-    entities = [CurrentWeatherResponse::class,Coord::class,Main::class,Sys::class,Wind::class],
+    entities = [CurrentWeatherResponse::class, Coord::class, Main::class, Sys::class, Wind::class, Details::class],
     version = 1
 )
 @TypeConverters(DetailTypeConverters::class)
@@ -19,8 +19,12 @@ abstract class ForecastDatabase: RoomDatabase() {
         @Volatile private var instance: ForecastDatabase? = null
         private var LOCK = Any()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            instance ?: buildDatabase(context).also { instance = it }
+        operator fun invoke(context: Context) = instance
+            ?: synchronized(LOCK) {
+            instance
+                ?: buildDatabase(
+                    context
+                ).also { instance = it }
         }
 
         private fun buildDatabase(context: Context) =

@@ -4,15 +4,12 @@ import androidx.room.*
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
 
 @Entity(tableName = "weather_response")
 data class CurrentWeatherResponse(
     @PrimaryKey(autoGenerate = false) var id_count: Int = 0,
     @Embedded(prefix = "coord_") val coord: Coord,
-    //@Embedded(prefix = "details_") @SerializedName("weather") val details: List<Details>,
+    @Embedded(prefix = "details_") @SerializedName("weather") val details: ArrayList<Details>,
     val base: String,
     @Embedded(prefix = "main_") val main: Main,
     val visibility: Int,
@@ -24,15 +21,15 @@ data class CurrentWeatherResponse(
     val cod: Int
 )
 
-class DetailTypeConverters {
+object DetailTypeConverters {
     val gson = Gson()
 
-    @TypeConverter fun fromList(value: List<Details>): String {
+    @TypeConverter @JvmStatic fun fromList(value: ArrayList<Details>): String {
         return gson.toJson(value)
     }
 
-    @TypeConverter fun toList(value: String): List<Details> {
-        val type = object : TypeToken<List<Details>>() {}.type
+    @TypeConverter @JvmStatic fun toList(value: String): ArrayList<Details> {
+        val type = object : TypeToken<ArrayList<Details>>() {}.type
         return gson.fromJson(value, type)
     }
 }
