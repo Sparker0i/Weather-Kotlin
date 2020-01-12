@@ -1,14 +1,18 @@
 package com.a5corp.weather.ui.weather.current
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.a5corp.weather.R
+import com.a5corp.weather.ui.MainActivity
 import com.a5corp.weather.ui.base.ScopedFragment
+import com.a5corp.weather.utils.setWeatherIcon
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -22,11 +26,13 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     private val viewModelFactory: CurrentWeatherViewModelFactory by instance()
     private lateinit var viewModel: CurrentWeatherViewModel
+    private var weatherFont: Typeface? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        weatherFont = ResourcesCompat.getFont(context!!, R.font.weather)
         return inflater.inflate(R.layout.current_weather_fragment, container, false)
     }
 
@@ -50,7 +56,7 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
             updateWind(it.wind.deg.toString(), it.wind.speed)
             updateVisibility(it.visibility.toDouble())
             updateCondition(it.weather!![0].description)
-
+            updateIcon(it.weather[0].id)
             changeWeatherIcon()
         })
     }
@@ -61,6 +67,12 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun updateLocation(location: String) {
         (activity as AppCompatActivity).supportActionBar?.title = location
+    }
+
+    private fun updateIcon(id: Int) {
+        println(id)
+        textView_condition_icon.typeface = weatherFont
+        textView_condition_icon.text = setWeatherIcon(id)
     }
 
     private fun updateDateToToday() {
