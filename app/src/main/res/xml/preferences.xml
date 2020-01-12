@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
-        android:title="Weather Location">
+        app:title="Weather Location">
         <SwitchPreference
-            android:key="USE_DEVICE_LOCATION"
-            android:title="Use device location"
-            android:summary="Allow the app to get your location"
-            android:defaultValue="true"
-            android:disableDependentsState="true"/>
+            app:key="USE_DEVICE_LOCATION"
+            app:title="Use device location"
+            app:summary="Allow the app to get your location"
+            app:defaultValue="false"
+            app:disableDependentsState="true"/>
 
         <EditTextPreference
-            android:key="CUSTOM_LOCATION"
-            android:title="Location"
-            android:summary="The location for which the weather is displayed"
-            android:defaultValue="Los Angeles"
-            android:dependency="USE_DEVICE_LOCATION"/>
+            app:key="CUSTOM_LOCATION"
+            app:title="Location"
+            app:summary="The location for which the weather is displayed"
+            app:defaultValue="Bengaluru"
+            app:dependency="USE_DEVICE_LOCATION"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Units">
+        app:key="theme_category"
+        app:title="Theme">
+
         <ListPreference
-            android:key="UNIT_SYSTEM"
-            android:title="Unit system"
-            android:summary="%s"
-            android:defaultValue="METRIC"
-            android:entries="@array/unitSystemEntries"
-            android:entryValues="@array/unitSystemValues"/>
+            app:key="@string/theme_pref_key"
+            app:title="Choose theme"
+            app:defaultValue="light"
+            app:dialogTitle="Choose theme"
+            app:entries="@array/theme_list_array"
+            app:entryValues="@array/theme_entry_array"
+            app:useSimpleSummaryProvider="true"/>
+
     </PreferenceCategory>
-</PreferenceScreen>
+
+    <PreferenceCategory
+        app:title="Units">
+        <ListPreference
+            app:key="UNIT_SYSTEM"
+            app:title="Unit system"
+            app:summary="%s"
+            app:defaultValue="METRIC"
+            app:entries="@array/unitSystemEntries"
+            app:entryValues="@array/unitSystemValues"/>
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>

@@ -10,6 +10,7 @@ import com.a5corp.weather.internal.LocationPermissionNotGrantedException
 import com.a5corp.weather.utils.asDeferred
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.Deferred
+import kotlin.math.abs
 
 const val USE_DEVICE_LOCATION = "USE_DEVICE_LOCATION"
 const val CUSTOM_LOCATION = "CUSTOM_LOCATION"
@@ -47,8 +48,8 @@ class LocationProviderImpl(
             ?: return false
 
         val comparisonThreshold = 0.03
-        return Math.abs(deviceLocation.latitude - lastWeatherLocation.coord.lat) > comparisonThreshold &&
-                Math.abs(deviceLocation.longitude - lastWeatherLocation.coord.lon) > comparisonThreshold
+        return abs(deviceLocation.latitude - lastWeatherLocation.coord!!.lat) > comparisonThreshold &&
+                abs(deviceLocation.longitude - lastWeatherLocation.coord!!.lon) > comparisonThreshold
     }
 
     private fun isUsingDeviceLocation(): Boolean {

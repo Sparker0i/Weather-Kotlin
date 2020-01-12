@@ -85,13 +85,15 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when (requestCode) {
-            MY_PERMISSION_ACCESS_COARSE_LOCATION -> {
-                if (grantResults.isNotEmpty() and (grantResults[0] == PERMISSION_GRANTED)) {
-                    bindLocationManager()
-                }
-                else {
-                    Toast.makeText(this, "Please set location manually in Settings", Toast.LENGTH_LONG).show()
+        if (grantResults != null && grantResults.isNotEmpty()) {
+            when (requestCode) {
+                MY_PERMISSION_ACCESS_COARSE_LOCATION -> {
+                    if ((grantResults[0] == PERMISSION_GRANTED)) {
+                        bindLocationManager()
+                    }
+                    else {
+                        Toast.makeText(this, "Please set location manually in Settings", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

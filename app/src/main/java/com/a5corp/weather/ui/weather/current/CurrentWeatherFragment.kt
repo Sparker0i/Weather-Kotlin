@@ -15,6 +15,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+
 class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     override val kodein by closestKodein()
@@ -43,11 +44,12 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         currentWeather.observe(this@CurrentWeatherFragment, Observer {
             if (it == null) return@Observer
 
-            updateLocation(it.cityName)
+            updateLocation(it.name)
             updateDateToToday()
-            updateTemperature(it.temperature, it.feelsLikeTemperature)
-            updateWind(it.windDirection.toString(), it.windSpeed)
+            updateTemperature(it.main.temp, it.main.feelsLike)
+            updateWind(it.wind.deg.toString(), it.wind.speed)
             updateVisibility(it.visibility.toDouble())
+            updateCondition(it.weather!![0].description)
 
             changeWeatherIcon()
         })
@@ -72,7 +74,13 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun updateCondition(condition: String) {
-        textView_condition.text = condition
+        val strArray = condition.split(" ")
+        val builder = StringBuilder()
+        for (s in strArray) {
+            val cap = s.substring(0, 1).toUpperCase() + s.substring(1)
+            builder.append("$cap ")
+        }
+        textView_condition.text = builder.toString()
     }
 
     private fun updatePrecipitation(precipitation: Double) {
