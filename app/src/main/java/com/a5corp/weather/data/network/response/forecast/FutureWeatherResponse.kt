@@ -12,7 +12,7 @@ data class FutureWeatherResponse(
     @PrimaryKey(autoGenerate = false) val id_count: Int = 1,
     @Embedded(prefix = "city_") val city: City,
     val cod: String,
-    @Embedded(prefix = "list_") val list: ArrayList<WeatherList>
+    val list: ArrayList<WeatherList>
 )
 
 @Entity(tableName = "future_list", indices = [Index(value = ["dt"], unique = true)])
@@ -21,7 +21,7 @@ data class WeatherList(
     @PrimaryKey(autoGenerate = false) var id_count: Int = 1,
     val dt: Int,
     @Embedded(prefix = "main_") val main: Main,
-    @Embedded(prefix = "list_detail_") val weather: ArrayList<WeatherDetails>,
+    val weather: ArrayList<WeatherDetails>,
     @Embedded(prefix = "wind_") val wind: Wind
 )
 
