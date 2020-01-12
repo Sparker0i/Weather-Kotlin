@@ -9,12 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.a5corp.weather.R
 import com.a5corp.weather.ui.base.ScopedFragment
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+
 
 class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
@@ -74,7 +74,13 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun updateCondition(condition: String) {
-        textView_condition.text = condition
+        val strArray = condition.split(" ")
+        val builder = StringBuilder()
+        for (s in strArray) {
+            val cap = s.substring(0, 1).toUpperCase() + s.substring(1)
+            builder.append("$cap ")
+        }
+        textView_condition.text = builder.toString()
     }
 
     private fun updatePrecipitation(precipitation: Double) {
