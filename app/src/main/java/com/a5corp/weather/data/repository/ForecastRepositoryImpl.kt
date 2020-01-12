@@ -10,6 +10,7 @@ import com.a5corp.weather.data.provider.LocationProvider
 import com.a5corp.weather.data.provider.PreferenceProvider
 import com.a5corp.weather.internal.UnitSystem
 import com.a5corp.weather.utils.zonedDateTime
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,16 +27,19 @@ class ForecastRepositoryImpl(
 ) : ForecastRepository {
 
     init {
-        weatherNetworkDataSource.getCurrentWeather.observeForever{ newCurrentWeather ->
+        weatherNetworkDataSource.fetchedCurrentWeather.observeForever{ newCurrentWeather ->
             persistFetchedCurrentWeather(newCurrentWeather)
         }
     }
 
     override suspend fun getCurrentWeather(metric: Boolean): LiveData<out UnitSpecificCurrentWeather> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun getCurrentWeatherResponse(metric: Boolean): LiveData<out CurrentWeatherResponse> {
         return withContext(Dispatchers.IO) {
             initWeatherData(metric)
-            return@withContext if (metric) currentWeatherDao.getWeatherMetric()
-            else currentWeatherDao.getWeatherImperial()
+            return@withContext currentWeatherDao.getWeather()
         }
     }
 
@@ -53,7 +57,6 @@ class ForecastRepositoryImpl(
 
     private suspend fun initWeatherData(metric: Boolean) {
         val lastWeatherLocation = currentWeatherDao.getWeather()
-        println(lastWeatherLocation.value)
 
         if (lastWeatherLocation.value == null
             || locationProvider.hasLocationChanged(lastWeatherLocation.value!!)) {
@@ -61,7 +64,7 @@ class ForecastRepositoryImpl(
             return
         }
 
-        if (isFetchCurrentNeeded(zonedDateTime(lastWeatherLocation.value!!.dt)))
+        if (isFetchCurrentNeeded(zonedDateTime(lastWeatherLocation.value!!.dt!!)))
             fetchCurrentWeather(metric)
     }
 

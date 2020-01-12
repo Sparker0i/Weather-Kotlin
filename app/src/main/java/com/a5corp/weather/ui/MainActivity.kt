@@ -85,7 +85,6 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        println(grantResults)
         if (grantResults != null && grantResults.isNotEmpty()) {
             when (requestCode) {
                 MY_PERMISSION_ACCESS_COARSE_LOCATION -> {

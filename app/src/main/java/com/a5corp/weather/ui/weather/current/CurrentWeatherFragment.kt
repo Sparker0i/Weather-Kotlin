@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.a5corp.weather.R
 import com.a5corp.weather.ui.base.ScopedFragment
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -43,11 +44,12 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         currentWeather.observe(this@CurrentWeatherFragment, Observer {
             if (it == null) return@Observer
 
-            updateLocation(it.cityName)
+            updateLocation(it.name)
             updateDateToToday()
-            updateTemperature(it.temperature, it.feelsLikeTemperature)
-            updateWind(it.windDirection.toString(), it.windSpeed)
+            updateTemperature(it.main.temp, it.main.feelsLike)
+            updateWind(it.wind.deg.toString(), it.wind.speed)
             updateVisibility(it.visibility.toDouble())
+            updateCondition(it.weather!![0].description)
 
             changeWeatherIcon()
         })

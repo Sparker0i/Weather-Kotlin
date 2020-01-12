@@ -8,7 +8,7 @@ import com.a5corp.weather.internal.lazyDeferred
 
 class CurrentWeatherViewModel(
     private val forecastRepository: ForecastRepository,
-    private val unitProvider: UnitProvider
+    unitProvider: UnitProvider
 ) : ViewModel() {
     private val unitSystem = unitProvider.getUnitSystem()
 
@@ -16,6 +16,6 @@ class CurrentWeatherViewModel(
         get() = unitSystem == UnitSystem.METRIC
 
     val weather by lazyDeferred {
-        forecastRepository.getCurrentWeather(isMetric)
+        forecastRepository.getCurrentWeatherResponse(isMetric)
     }
 }
