@@ -4,14 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.a5corp.weather.data.network.response.current.*
+import com.a5corp.weather.data.network.response.forecast.City
+import com.a5corp.weather.data.network.response.forecast.FutureWeatherResponse
+import com.a5corp.weather.data.network.response.forecast.WeatherList
 
 @Database(
-    entities = [CurrentWeatherResponse::class, Coord::class, Main::class, Sys::class, Wind::class, Details::class],
+    entities = [CurrentWeatherResponse::class, Coord::class, Main::class, Sys::class, Wind::class, WeatherDetails::class, FutureWeatherResponse::class, WeatherList::class, City::class],
     version = 1
 )
-@TypeConverters(DetailTypeConverters::class)
 abstract class ForecastDatabase: RoomDatabase() {
     abstract fun currentWeatherDao(): CurrentWeatherDao
 

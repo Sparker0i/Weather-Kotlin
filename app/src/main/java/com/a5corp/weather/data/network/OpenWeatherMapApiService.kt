@@ -2,6 +2,7 @@ package com.a5corp.weather.data.network
 
 import com.a5corp.weather.BuildConfig
 import com.a5corp.weather.data.network.response.current.CurrentWeatherResponse
+import com.a5corp.weather.data.network.response.forecast.FutureWeatherResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -14,6 +15,8 @@ import retrofit2.http.Query
 interface OpenWeatherMapApiService {
     @GET("weather") fun getCurrentWeather(@Query("q") location: String, @Query("units") units: String): Deferred<CurrentWeatherResponse>
     @GET("weather") fun getCurrentWeather(@Query("lat") latitude: Double, @Query("lon") longitude: Double, @Query("units") units: String): Deferred<CurrentWeatherResponse>
+    @GET("forecast") fun getFutureWeather(@Query("q") location: String, @Query("units") units: String, @Query("cnt") days: Int): Deferred<FutureWeatherResponse>
+    @GET("forecast") fun getFutureWeather(@Query("lat") latitude: Double, @Query("lon") longitude: Double, @Query("units") units: String, @Query("cnt") days: Int): Deferred<FutureWeatherResponse>
 
     companion object {
         operator fun invoke(
