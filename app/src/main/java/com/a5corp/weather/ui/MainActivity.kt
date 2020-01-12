@@ -2,6 +2,7 @@ package com.a5corp.weather.ui
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
